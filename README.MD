@@ -1,8 +1,23 @@
-# 音乐APP全栈开发
+##音乐应用开发
+### 一、环境配置
+- 配置Maven
+  - [下载] https://maven.apache.org/download.cgi
+  - [配置] 
+    - [x] 配置PATH
+    - [x] 配置本地仓库路径 `~/.m2/setting.xml | <localRepository>`
+    - [x] [配置镜像](https://developer.aliyun.com/mirror/maven)
+- 配置VSCODE
+  - [插件]
+    - [x] Java Extension
+    - [x] Spring Boot Extension
+  - [MVN]
+    - [x] Java > Configuration > Maven: UserSetting
+- 配置MYSQL
+  - [使用Docker安装Msql](https://www.jianshu.com/p/eb3d9129d880)  
+    - `docker pull mysql/mysql-server:latest`
 ------
-## Server
-## App
-## WxApp
-------
-# REFS
-- https://www.bilibili.com/video/BV1XQ4y1a7mX?spm_id_from=333.999.0.0
+### ☆ REFS:
+- [音乐APP全栈开发](https://www.bilibili.com/video/BV1XQ4y1a7mX?spm_id_from=333.999.0.0)
+- [VSCode配置Boot](https://blog.csdn.net/zyd573803837/article/details/109263219)
+- [安装mysql](https://www.jianshu.com/p/eb3d9129d880)
+- [微信云托管Dockerfile](https://github.com/WeixinCloud/wxcloudrun-springboot/blob/main/Dockerfile)
