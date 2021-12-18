@@ -1,4 +1,3 @@
-##音乐应用开发
 ### 一、环境配置
 - 配置Maven
   - [下载] https://maven.apache.org/download.cgi
