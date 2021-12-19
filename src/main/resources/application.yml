@@ -1,9 +1,10 @@
 server:
   port: 80
 
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/fsmusic?characterEncoding=UTF8&userSSL=false
+    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:fsmusic}
     username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    password: ${MySQL_PASSWORD}
