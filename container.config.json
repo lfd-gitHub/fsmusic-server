@@ -1,15 +1,20 @@
 {
-	"containerPort": 80,                            
-	"minNum": 0,                                    
-	"maxNum": 50,                                   
-	"cpu": 1,                                    	
-	"mem": 1,                                     	
-	"policyType": "cpu",                            
-	"policyThreshold": 60,                          
-	"envParams": {},                                
-	"customLogs": "stdout",                         
-	"dataBaseName":"fsmusic",               
-	"executeSQLs":[
+	"containerPort": 80,
+	"minNum": 0,
+	"maxNum": 50,
+	"cpu": 1,
+	"mem": 1,
+	"policyType": "cpu",
+	"policyThreshold": 60,
+	"envParams": {
+		"MYSQL_ADDRESS": "10.0.224.8:3306",
+		"MYSQL_USERNAME": "root",
+		"MYSQL_PASSWORD": "1234567Aa!",
+		"MYSQL_DATABASE": "fsmusic"
+	},
+	"customLogs": "stdout",
+	"dataBaseName": "fsmusic",
+	"executeSQLs": [
 		"CREATE DATABASE IF NOT EXISTS fsmusic;"
-	]                                               
+	]
 }

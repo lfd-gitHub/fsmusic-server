@@ -3,8 +3,10 @@ server:
 
 
 spring:
+  application:
+    name: FsMusic
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:fsmusic}
+    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE}?characterEncoding=UTF8&userSSL=false
     username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
+    password: ${MYSQL_PASSWORD}
