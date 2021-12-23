@@ -13,6 +13,12 @@ COPY src /app/src
 # 将pom.xml文件，拷贝到工作目录下
 COPY pom.xml /app
 
+ENV MYSQL_ADDRESS 10.0.224.10:3306
+ENV MYSQL_USERNAME root
+ENV MYSQL_PASSWORD 1234567Aa!
+ENV MYSQL_DATABASE fsmusic
+ENV APPLICATION_PORT 80
+
 # 执行代码编译命令
 RUN mvn -f /app/pom.xml clean package -Dspring.profiles.active=prod
 
