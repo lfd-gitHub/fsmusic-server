@@ -6,13 +6,7 @@
 	"mem": 1,
 	"policyType": "cpu",
 	"policyThreshold": 60,
-	"envParams": {
-		"MYSQL_ADDRESS": "10.0.224.10:3306",
-		"MYSQL_USERNAME": "root",
-		"MYSQL_PASSWORD": "1234567Aa!",
-		"MYSQL_DATABASE": "fsmusic",
-		"SERVER_PORT": "80"
-	},
+	"envParams": {},
 	"customLogs": "stdout",
 	"dataBaseName": "fsmusic",
 	"executeSQLs": [
