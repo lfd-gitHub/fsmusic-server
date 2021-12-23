@@ -8,7 +8,7 @@ class FsmusicApplicationTests {
 
 	@Test
 	void contextLoads() {
-		
+		System.out.println("---");
 	}
 
 }
