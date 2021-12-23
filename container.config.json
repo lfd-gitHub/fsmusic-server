@@ -10,7 +10,8 @@
 		"MYSQL_ADDRESS": "10.0.224.8:3306",
 		"MYSQL_USERNAME": "root",
 		"MYSQL_PASSWORD": "1234567Aa!",
-		"MYSQL_DATABASE": "fsmusic"
+		"MYSQL_DATABASE": "fsmusic",
+		"SERVER_PORT":80
 	},
 	"customLogs": "stdout",
 	"dataBaseName": "fsmusic",
