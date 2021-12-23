@@ -46,8 +46,10 @@ public class DefaultController {
 
         // userRepository.save(user);
         Role savedAdmin = roleRepository.findByName("Admin");
+        System.out.println("admin-role:" + savedAdmin);
         if(savedAdmin == null) roleRepository.save(roleAdmin);
-        Role savedUser = roleRepository.findByName("Admin");
+        Role savedUser = roleRepository.findByName("User");
+        System.out.println("user-role:" + savedUser);
         if(savedUser == null) roleRepository.save(roleUser);
 
         //user.setRoles(Arrays.asList(new Role[]{role}));

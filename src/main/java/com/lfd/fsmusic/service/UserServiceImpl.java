@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import com.lfd.fsmusic.mapper.UserMapper;
 import com.lfd.fsmusic.repository.UserRepository;
-import com.lfd.fsmusic.repository.dto.UserDto;
 import com.lfd.fsmusic.service.base.UserService;
+import com.lfd.fsmusic.service.dto.UserDto;
 
 import org.springframework.stereotype.Service;
 

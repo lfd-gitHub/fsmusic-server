@@ -1,4 +1,4 @@
-package com.lfd.fsmusic.repository.dto;
+package com.lfd.fsmusic.service.dto;
 
 import com.lfd.fsmusic.repository.entity.Role;
 
