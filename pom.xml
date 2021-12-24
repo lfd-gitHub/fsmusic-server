@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lfd</groupId>
-    <artifactId>fsmusicwx</artifactId>
+    <artifactId>fsmusic</artifactId>
     <version>1.0</version>
     <name>fsmusic</name>
     <description>fsmusic</description>
