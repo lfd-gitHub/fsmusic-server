@@ -7,7 +7,7 @@ CREATE TABLE tb_user(
     locked TINYINT(1) DEFAULT 0 NOT NULL COMMENT '锁定状态',
     enabled TINYINT(1) DEFAULT 0 NOT NULL COMMENT '可用状态',
     last_login_ip VARCHAR(64) NULL COMMENT '登陆IP',
-    last_login_time DATETIME(6) NOT NULL COMMENT '登陆时间',
+    last_login_time DATETIME(6) NULL COMMENT '登陆时间',
     create_time DATETIME(6) NOT NULL COMMENT '创建时间',
     update_time DATETIME(6) NOT NULL COMMENT '更新时间',
     CONSTRAINT uk_user_username UNIQUE (username)

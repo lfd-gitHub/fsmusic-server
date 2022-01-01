@@ -2,9 +2,6 @@ package com.lfd.fsmusic.service.dto;
 
 import com.lfd.fsmusic.repository.entity.Role;
 
-import lombok.Data;
+public class RoleDto extends Role {
 
-@Data
-public class RoleDto extends Role{
-    
 }

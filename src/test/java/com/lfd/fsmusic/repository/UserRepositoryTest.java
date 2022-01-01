@@ -2,6 +2,7 @@ package com.lfd.fsmusic.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import com.lfd.fsmusic.repository.entity.Role;
 import com.lfd.fsmusic.repository.entity.User;
@@ -38,12 +39,14 @@ public class UserRepositoryTest {
         System.out.println("--------------");
         System.out.println(repo.toString());
         repo.save(user);
-        User userQuery = repo.getByUsername("uuuu");
-        System.out.println("roles : "+ userQuery.getRoles());
-        System.out.println(userQuery.toString());
+        Optional<User> userQuery = repo.findByUsername("uuuu");
+        if (userQuery.isPresent()) {
+            System.out.println("roles : " + userQuery.get().getRoles());
+            System.out.println(userQuery.toString());
+        }
         System.out.println("--------------");
         List<Role> roleList = repoRole.findAll();
         System.out.println("roles:" + roleList.toString());
-        
+
     }
 }
