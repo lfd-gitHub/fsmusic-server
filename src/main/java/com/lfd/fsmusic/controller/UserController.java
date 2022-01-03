@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "用户接口", tags = { "用户接口" })
+@Api(tags = "用户接口")
 @RequestMapping("/api/user")
 @RestController
 public class UserController {
@@ -32,8 +32,8 @@ public class UserController {
         this.uMapper = uMapper;
     }
 
-    @ApiOperation(value = "用户列表", notes = "")
-    @GetMapping("/list")
+    @ApiOperation(value = "用户列表")
+    @GetMapping()
     ApiResponse list() {
         List<UserVo> voList = uService.list().stream()
                 .map(uMapper::toVo)
@@ -41,12 +41,18 @@ public class UserController {
         return ApiResponse.ok(voList);
     }
 
-    @ApiOperation(value = "用户创建", notes = "")
-    @PostMapping("/create")
+    @ApiOperation(value = "用户创建")
+    @PostMapping()
     ApiResponse create(@RequestBody UserCreateDto user) {
         UserDto uDo = uService.create(user);
         UserVo uVo = uMapper.toVo(uDo);
         return ApiResponse.ok(uVo);
     }
 
+    @ApiOperation("登陆接口")
+    @PostMapping("/login")
+    public void fakeLogin(@RequestBody UserCreateDto user) {
+        throw new IllegalStateException(
+                "This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
 }

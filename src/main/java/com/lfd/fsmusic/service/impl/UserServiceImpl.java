@@ -44,6 +44,8 @@ public class UserServiceImpl implements UserService {
             throw new BizException(EType.USERNAME_DUPLICATE);
         }
         User eUser = uMapper.toEntity(user);
+        eUser.setEnabled(true);
+        eUser.setLocked(false);
         eUser.setPassword(pEncoder.encode(user.getPassword()));
         return uMapper.toDto(uRepo.save(eUser));
     }
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> oUser = uRepo.findByUsername(username);
         if (!oUser.isPresent()) {
-            throw new BizException(EType.USERNAME_DUPLICATE);
+            throw new BizException(EType.USERNAME_NOT_FOUND);
         }
         return oUser.get();
     }
