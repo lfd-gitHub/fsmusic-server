@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "用户列表")
-    @GetMapping()
+    @GetMapping
     ApiResponse list() {
         List<UserVo> voList = uService.list().stream()
                 .map(uMapper::toVo)
@@ -42,16 +42,23 @@ public class UserController {
     }
 
     @ApiOperation(value = "用户创建")
-    @PostMapping()
+    @PostMapping
     ApiResponse create(@RequestBody UserCreateDto user) {
         UserDto uDo = uService.create(user);
         UserVo uVo = uMapper.toVo(uDo);
         return ApiResponse.ok(uVo);
     }
 
-    @ApiOperation("登陆接口")
+    @ApiOperation("登录接口")
     @PostMapping("/login")
     public void fakeLogin(@RequestBody UserCreateDto user) {
+        throw new IllegalStateException(
+                "This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
+
+    @ApiOperation("登出接口")
+    @PostMapping("/logout")
+    public void fakeLogout() {
         throw new IllegalStateException(
                 "This method shouldn't be called. It's implemented by Spring Security filters.");
     }

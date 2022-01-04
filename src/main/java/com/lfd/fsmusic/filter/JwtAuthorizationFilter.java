@@ -1,6 +1,7 @@
 package com.lfd.fsmusic.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -36,11 +37,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        token = token.replace(SecurityCfg.TOKEN_PREFIX, "");
         String username = JWT.require(Algorithm.HMAC512(SecurityCfg.SECRET))
-                .build().verify(token.replace(SecurityCfg.TOKEN_PREFIX, ""))
+                .build().verify(token)
                 .getSubject();
         if (username != null) {
-            return new UsernamePasswordAuthenticationToken(username, null);
+            return new UsernamePasswordAuthenticationToken(username, token, new ArrayList<>());
         }
         return null;
     }

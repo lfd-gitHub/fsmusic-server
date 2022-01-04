@@ -10,5 +10,4 @@ class FsmusicApplicationTests {
 	void contextLoads() {
 		System.out.println("---");
 	}
-
 }
