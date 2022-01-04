@@ -31,4 +31,4 @@ COPY --from=build /app/target/fsmusic-1.0.jar .
 EXPOSE 80
 
 # 执行启动命令
-CMD ["java", "-jar", "/app/fsmusic-1.0.jar"]
+CMD ["java", "-jar", "/app/fsmusic-1.0.jar","--spring.profiles.active=prod"]
