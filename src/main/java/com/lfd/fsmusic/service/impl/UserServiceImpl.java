@@ -10,15 +10,21 @@ import com.lfd.fsmusic.mapper.UserMapper;
 import com.lfd.fsmusic.repository.UserRepository;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.UserService;
-import com.lfd.fsmusic.service.dto.UserCreateDto;
 import com.lfd.fsmusic.service.dto.UserDto;
+import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository uRepo;
     private final PasswordEncoder pEncoder;
@@ -44,18 +50,52 @@ public class UserServiceImpl implements UserService {
             throw new BizException(EType.USERNAME_DUPLICATE);
         }
         User eUser = uMapper.toEntity(user);
+        if (eUser.getNickname() == null)
+            eUser.setNickname(user.getUsername());
         eUser.setEnabled(true);
         eUser.setLocked(false);
         eUser.setPassword(pEncoder.encode(user.getPassword()));
         return uMapper.toDto(uRepo.save(eUser));
     }
 
+    public User findByIdAndCheck(String id) {
+        Optional<User> user = uRepo.findById(id);
+        if (!user.isPresent())
+            throw new BizException(EType.USERNAME_NOT_FOUND);
+        return user.get();
+    }
+
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDto findById(String id) {
+        return uMapper.toDto(findByIdAndCheck(id));
+    }
+
+    @Override
+    public UserDto update(String id, UserCreateDto uDto) {
+        findByIdAndCheck(id);
+        User user = uRepo.save(uMapper.toEntity(uDto));
+        return uMapper.toDto(user);
+    }
+
+    @Override
+    public boolean delete(String id) {
+        uRepo.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public Page<UserDto> find(Pageable pageable) {
+        return uRepo.findAll(pageable).map(uMapper::toDto);
+    }
+
+    @Override
+    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> oUser = uRepo.findByUsername(username);
         if (!oUser.isPresent()) {
             throw new BizException(EType.USERNAME_NOT_FOUND);
         }
-        return oUser.get();
+        UserDto uDto = uMapper.toDto(oUser.get());
+        logger.debug("uDto = " + uDto);
+        return uDto;
     }
 }

@@ -2,12 +2,10 @@ package com.lfd.fsmusic.mapper;
 
 import com.lfd.fsmusic.controller.vo.UserVo;
 import com.lfd.fsmusic.repository.entity.User;
-import com.lfd.fsmusic.service.dto.UserCreateDto;
 import com.lfd.fsmusic.service.dto.UserDto;
+import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,7 +17,6 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
-    @Mappings({ @Mapping(target = "password", ignore = true) })
     UserVo toVo(UserDto user);
 
     User toEntity(UserCreateDto createUser);
