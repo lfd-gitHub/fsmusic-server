@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import com.lfd.fsmusic.config.exceptions.RestAccessDeniedHandler;
 import com.lfd.fsmusic.config.exceptions.RestAuthenticationEntryPoint;
-import com.lfd.fsmusic.filter.JwtAuthenticationFilter;
 import com.lfd.fsmusic.filter.JwtAuthorizationFilter;
 import com.lfd.fsmusic.service.UserService;
 
@@ -65,13 +64,14 @@ public class SecurityCfg extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
                 .logout().logoutUrl("/api/user/logout")
                 .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers("/api/token").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(aDeniedHandler)
                 .authenticationEntryPoint(rEntryPoint)
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

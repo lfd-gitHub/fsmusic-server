@@ -5,7 +5,6 @@ import com.lfd.fsmusic.controller.vo.UserVo;
 import com.lfd.fsmusic.mapper.UserMapper;
 import com.lfd.fsmusic.service.UserService;
 import com.lfd.fsmusic.service.dto.UserDto;
-import com.lfd.fsmusic.service.dto.in.LoginDto;
 import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
 import org.springframework.data.domain.Pageable;
@@ -67,6 +66,12 @@ public class UserController {
         return ApiResponse.ok(uMapper.toVo(uService.findById(id)));
     }
 
+    @ApiOperation(value = "获取当前用户信息")
+    @GetMapping("/me")
+    ApiResponse me() {
+        return ApiResponse.ok(uMapper.toVo(uService.current()));
+    }
+
     @ApiOperation(value = "更新用户信息")
     @PutMapping("/{id}")
     ApiResponse update(@PathVariable String id, @Validated @RequestBody UserCreateDto uCreateDto) {
@@ -78,13 +83,6 @@ public class UserController {
     ApiResponse delete(@PathVariable String id) {
         uService.delete(id);
         return ApiResponse.ok();
-    }
-
-    @ApiOperation("登录接口")
-    @PostMapping("/login")
-    public void fakeLogin(@RequestBody LoginDto user) {
-        throw new IllegalStateException(
-                "This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
     @ApiOperation("登出接口")

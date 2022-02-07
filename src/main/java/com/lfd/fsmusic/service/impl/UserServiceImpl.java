@@ -1,9 +1,13 @@
 package com.lfd.fsmusic.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.lfd.fsmusic.config.SecurityCfg;
 import com.lfd.fsmusic.config.exceptions.BizException;
 import com.lfd.fsmusic.config.exceptions.EType;
 import com.lfd.fsmusic.mapper.UserMapper;
@@ -11,12 +15,15 @@ import com.lfd.fsmusic.repository.UserRepository;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.UserService;
 import com.lfd.fsmusic.service.dto.UserDto;
+import com.lfd.fsmusic.service.dto.in.LoginDto;
 import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -97,5 +104,30 @@ public class UserServiceImpl implements UserService {
         UserDto uDto = uMapper.toDto(oUser.get());
         logger.debug("uDto = " + uDto);
         return uDto;
+    }
+
+    @Override
+    public String createToken(LoginDto loginDto) {
+        UserDto user = loadUserByUsername(loginDto.getUsername());
+        if (!pEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            throw new BizException(EType.USER_PASSWORD_NOT_MATCH);
+        }
+        if (!user.isEnabled()) {
+            throw new BizException(EType.USER_DISABLED);
+        }
+        if (!user.isAccountNonLocked()) {
+            throw new BizException(EType.USER_LOCKED);
+        }
+
+        String token = JWT.create().withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityCfg.EXPIRE_TIME))
+                .sign(Algorithm.HMAC512(SecurityCfg.SECRET));
+        return token;
+    }
+
+    @Override
+    public UserDto current() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return loadUserByUsername(auth.getName());
     }
 }

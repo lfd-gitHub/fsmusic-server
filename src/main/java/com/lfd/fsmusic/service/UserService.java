@@ -3,6 +3,7 @@ package com.lfd.fsmusic.service;
 import java.util.List;
 
 import com.lfd.fsmusic.service.dto.UserDto;
+import com.lfd.fsmusic.service.dto.in.LoginDto;
 import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
 import org.springframework.data.domain.Page;
@@ -22,4 +23,8 @@ public interface UserService extends UserDetailsService {
     boolean delete(String id);
 
     UserDto create(UserCreateDto user);
+
+    String createToken(LoginDto loginDto);
+
+    UserDto current();
 }
