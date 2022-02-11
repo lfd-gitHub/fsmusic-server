@@ -12,15 +12,21 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.lfd.fsmusic.config.SecurityCfg;
 
+import com.lfd.fsmusic.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private UserService userService;
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager,UserService userService) {
         super(authenticationManager);
+        this.userService = userService;
     }
 
     @Override
@@ -42,7 +48,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .build().verify(token)
                 .getSubject();
         if (username != null) {
-            return new UsernamePasswordAuthenticationToken(username, token, new ArrayList<>());
+            UserDetails userDetails = this.userService.loadUserByUsername(username);
+            return new UsernamePasswordAuthenticationToken(username, token, userDetails.getAuthorities());
         }
         return null;
     }

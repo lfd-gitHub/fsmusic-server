@@ -1,7 +1,9 @@
 package com.lfd.fsmusic.controller.vo;
 
-import com.lfd.fsmusic.repository.entity.Role;
+import lombok.Data;
 
-public class RoleVo extends Role{
-    
+@Data
+public class RoleVo{
+    private String name;
+    private String title;
 }

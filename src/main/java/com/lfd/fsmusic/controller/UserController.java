@@ -26,6 +26,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.security.RolesAllowed;
+
 @Api(tags = "用户接口")
 @RequestMapping("/api/user")
 @RestController
@@ -40,12 +42,13 @@ public class UserController {
     }
 
     @ApiOperation(value = "查找用户")
-    @GetMapping
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query"),
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query"),
             @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query")
     })
+    @GetMapping
+    @RolesAllowed("ROLE_ADMIN")
     ApiResponse list(
             @PageableDefault(sort = {
                     "createTime" }, size = 2, direction = Sort.Direction.ASC) @ApiIgnore Pageable pageable) {
@@ -54,6 +57,7 @@ public class UserController {
 
     @ApiOperation(value = "用户创建")
     @PostMapping
+    @RolesAllowed("ROLE_ADMIN")
     ApiResponse create(@Validated @RequestBody UserCreateDto user) {
         UserDto uDo = uService.create(user);
         UserVo uVo = uMapper.toVo(uDo);
@@ -80,6 +84,7 @@ public class UserController {
 
     @ApiOperation(value = "删除用户")
     @DeleteMapping("/{id}")
+    @RolesAllowed("ROLE_ADMIN")
     ApiResponse delete(@PathVariable String id) {
         uService.delete(id);
         return ApiResponse.ok();

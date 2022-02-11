@@ -1,7 +1,10 @@
 package com.lfd.fsmusic.controller.vo;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.lfd.fsmusic.repository.entity.Role;
 import com.lfd.fsmusic.repository.entity.User.Gender;
 
 import lombok.Data;
@@ -15,4 +18,5 @@ public class UserVo {
     private boolean enabled;
     private String lastLoginIp;
     private LocalDateTime lastLoginTime;
+    private List<RoleVo> roles = new ArrayList<>();
 }

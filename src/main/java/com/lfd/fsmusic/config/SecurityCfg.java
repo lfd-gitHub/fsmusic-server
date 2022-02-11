@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(jsr250Enabled = true)
 public class SecurityCfg extends WebSecurityConfigurerAdapter {
 
     public static final String SECRET = "13ebccd";
@@ -54,7 +56,8 @@ public class SecurityCfg extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**")
                 .antMatchers("/profile")
                 .antMatchers("/profile/**")
-                .antMatchers("/v3/**");
+                .antMatchers("/v3/**")
+                .antMatchers("/api/token");
     }
 
     @Override
@@ -65,14 +68,13 @@ public class SecurityCfg extends WebSecurityConfigurerAdapter {
                 .logout().logoutUrl("/api/user/logout")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/token").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(aDeniedHandler)
                 .authenticationEntryPoint(rEntryPoint)
                 .and()
-                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(),uService))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

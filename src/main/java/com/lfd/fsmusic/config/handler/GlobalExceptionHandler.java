@@ -1,6 +1,5 @@
 package com.lfd.fsmusic.config.handler;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import com.lfd.fsmusic.base.ApiResponse;
@@ -10,6 +9,7 @@ import com.lfd.fsmusic.config.exceptions.EType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ApiResponse defaultHandler(Exception e) {
-        logger.error("[defaultHandler] = {}", e.getMessage());
+        logger.error("[defaultHandler] = {} | {}", e.getMessage(),e.getClass().getName());
         return ApiResponse.error();
     }
 
