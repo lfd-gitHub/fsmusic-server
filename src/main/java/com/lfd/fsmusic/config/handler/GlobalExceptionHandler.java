@@ -22,12 +22,14 @@ public class GlobalExceptionHandler {
     Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = BizException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse bizHandler(BizException e) {
         logger.error("[bizHandler] = {}", e.getMessage());
         return ApiResponse.error(e);
     }
 
     @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse defaultHandler(Exception e) {
         logger.error("[defaultHandler] = {} | {}", e.getMessage(),e.getClass().getName());
         return ApiResponse.error();

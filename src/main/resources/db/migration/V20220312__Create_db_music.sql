@@ -1,0 +1,8 @@
+CREATE TABLE tb_music(
+    id VARCHAR(32) NOT NULL PRIMARY KEY COMMENT 'ID',
+    name VARCHAR(128) NOT NULL COMMENT '名称',
+    description TEXT NULL COMMENT '描述',
+    status VARCHAR(32) DEFAULT 'DRAFT' NOT NULL COMMENT '状态',
+    create_time DATETIME(6) NOT NULL COMMENT '创建时间',
+    update_time DATETIME(6) NOT NULL COMMENT '更新时间'
+) ENGINE=InnoDb DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT '歌曲表'

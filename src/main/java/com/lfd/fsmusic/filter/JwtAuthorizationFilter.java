@@ -1,7 +1,6 @@
 package com.lfd.fsmusic.filter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -11,12 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.lfd.fsmusic.config.SecurityCfg;
-
 import com.lfd.fsmusic.service.UserService;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -24,7 +22,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UserService userService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager,UserService userService) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
         this.userService = userService;
     }

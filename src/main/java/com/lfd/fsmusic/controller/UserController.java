@@ -7,6 +7,7 @@ import com.lfd.fsmusic.service.UserService;
 import com.lfd.fsmusic.service.dto.UserDto;
 import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -45,13 +46,13 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query"),
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query"),
-            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query")
+            @ApiImplicitParam(name = "sort", dataType = "string", paramType = "query"),
     })
     @GetMapping
     @RolesAllowed("ROLE_ADMIN")
     ApiResponse list(
             @PageableDefault(sort = {
-                    "createTime" }, size = 2, direction = Sort.Direction.ASC) @ApiIgnore Pageable pageable) {
+                    "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable) {
         return ApiResponse.ok(uService.find(pageable).map(uMapper::toVo));
     }
 

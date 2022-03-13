@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lfd.fsmusic.repository.entity.Role;
 import com.lfd.fsmusic.repository.entity.User.Gender;
 
 import lombok.Data;

@@ -8,7 +8,6 @@ import com.lfd.fsmusic.service.dto.UserDto;
 import com.lfd.fsmusic.service.dto.in.UserCreateDto;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +15,15 @@ import org.springframework.stereotype.Component;
  * UserMapper
  */
 @Component
-@Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     UserDto toDto(User user);
 
     RoleVo toRoleVo(Role role);
+
     UserVo toVo(UserDto user);
 
     User toEntity(UserCreateDto createUser);
+    User updateEntity(String id,UserCreateDto createDto);
 }

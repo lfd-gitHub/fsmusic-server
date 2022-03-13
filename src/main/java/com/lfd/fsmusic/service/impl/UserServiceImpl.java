@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(String id, UserCreateDto uDto) {
         findByIdAndCheck(id);
-        User user = uRepo.save(uMapper.toEntity(uDto));
+        User user = uRepo.save(uMapper.updateEntity(id,uDto));
         return uMapper.toDto(user);
     }
 

@@ -13,4 +13,7 @@ public class BizException extends RuntimeException {
         return code;
     }
 
+    public static BizException from(EType type){
+        return new BizException(type);
+    }
 }
