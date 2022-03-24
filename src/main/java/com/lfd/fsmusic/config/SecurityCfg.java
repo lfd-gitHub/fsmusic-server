@@ -57,7 +57,8 @@ public class SecurityCfg extends WebSecurityConfigurerAdapter {
                 .antMatchers("/profile")
                 .antMatchers("/profile/**")
                 .antMatchers("/v3/**")
-                .antMatchers("/api/token");
+                .antMatchers("/api/token")
+                .antMatchers("/api/setting/**");
     }
 
     @Override

@@ -15,8 +15,8 @@ import com.lfd.fsmusic.repository.UserRepository;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.UserService;
 import com.lfd.fsmusic.service.dto.UserDto;
-import com.lfd.fsmusic.service.dto.in.LoginDto;
-import com.lfd.fsmusic.service.dto.in.UserCreateDto;
+import com.lfd.fsmusic.service.dto.in.LoginReq;
+import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto create(UserCreateDto user) {
+    public UserDto create(UserCreateReq user) {
         if (uRepo.findByUsername(user.getUsername()).isPresent()) {
             throw new BizException(EType.USERNAME_DUPLICATE);
         }
@@ -77,11 +77,10 @@ public class UserServiceImpl implements UserService {
         return uMapper.toDto(findByIdAndCheck(id));
     }
 
-
     @Override
-    public UserDto update(String id, UserCreateDto uDto) {
+    public UserDto update(String id, UserCreateReq uDto) {
         findByIdAndCheck(id);
-        User user = uRepo.save(uMapper.updateEntity(id,uDto));
+        User user = uRepo.save(uMapper.updateEntity(id, uDto));
         return uMapper.toDto(user);
     }
 
@@ -108,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String createToken(LoginDto loginDto) {
+    public String createToken(LoginReq loginDto) {
         UserDto user = loadUserByUsername(loginDto.getUsername());
         if (!pEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new BizException(EType.USER_PASSWORD_NOT_MATCH);
@@ -120,8 +119,10 @@ public class UserServiceImpl implements UserService {
             throw new BizException(EType.USER_LOCKED);
         }
 
+        Date exp = new Date(System.currentTimeMillis() + SecurityCfg.EXPIRE_TIME);
+        logger.debug("[uDto] jwt exp =>" + exp.getTime());
         String token = JWT.create().withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityCfg.EXPIRE_TIME))
+                .withExpiresAt(exp)
                 .sign(Algorithm.HMAC512(SecurityCfg.SECRET));
         return token;
     }

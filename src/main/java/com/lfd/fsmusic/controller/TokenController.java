@@ -2,7 +2,7 @@ package com.lfd.fsmusic.controller;
 
 import com.lfd.fsmusic.base.ApiResponse;
 import com.lfd.fsmusic.service.UserService;
-import com.lfd.fsmusic.service.dto.in.LoginDto;
+import com.lfd.fsmusic.service.dto.in.LoginReq;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class TokenController {
     UserService userService;
 
     @PostMapping
-    public ApiResponse create(@RequestBody LoginDto loginDto) {
+    public ApiResponse create(@RequestBody LoginReq loginDto) {
         return ApiResponse.ok(userService.createToken(loginDto));
     }
 

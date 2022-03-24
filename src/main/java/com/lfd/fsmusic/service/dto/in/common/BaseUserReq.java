@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ComValidateUser {
+public class BaseUserReq {
 
     @NotBlank(message = "用户名不能为空")
     @Size(min = 3, max = 64, message = "用户名长度在3到64个字符之间")

@@ -5,7 +5,7 @@ import com.lfd.fsmusic.controller.vo.UserVo;
 import com.lfd.fsmusic.repository.entity.Role;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.dto.UserDto;
-import com.lfd.fsmusic.service.dto.in.UserCreateDto;
+import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -24,6 +24,7 @@ public interface UserMapper {
 
     UserVo toVo(UserDto user);
 
-    User toEntity(UserCreateDto createUser);
-    User updateEntity(String id,UserCreateDto createDto);
+    User toEntity(UserCreateReq createUser);
+
+    User updateEntity(String id, UserCreateReq createDto);
 }

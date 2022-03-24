@@ -1,5 +1,7 @@
 package com.lfd.fsmusic.service.impl;
 
+import java.util.Optional;
+
 import com.lfd.fsmusic.config.exceptions.BizException;
 import com.lfd.fsmusic.config.exceptions.EType;
 import com.lfd.fsmusic.mapper.MusicMapper;
@@ -7,14 +9,11 @@ import com.lfd.fsmusic.repository.MusicRepository;
 import com.lfd.fsmusic.repository.entity.Music;
 import com.lfd.fsmusic.service.MusicService;
 import com.lfd.fsmusic.service.dto.MusicDto;
-import com.lfd.fsmusic.service.dto.in.MusicEditDto;
+import com.lfd.fsmusic.service.dto.in.MusicSaveReq;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MusicServiceImpl implements MusicService {
@@ -22,19 +21,19 @@ public class MusicServiceImpl implements MusicService {
     private final MusicRepository repository;
     private final MusicMapper mapper;
 
-    public MusicServiceImpl(MusicRepository repository,MusicMapper mapper) {
+    public MusicServiceImpl(MusicRepository repository, MusicMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
 
-
     private Music getEntity(String id) {
         Optional<Music> music = repository.findById(id);
-        if(!music.isPresent()) throw BizException.from(EType.MUSIC_NOT_FOUND);
+        if (!music.isPresent())
+            throw BizException.from(EType.MUSIC_NOT_FOUND);
         return music.get();
     }
 
-    public Page<MusicDto> list(Pageable pageable){
+    public Page<MusicDto> list(Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toDto);
     }
 
@@ -45,7 +44,7 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public boolean publish(String id){
+    public boolean publish(String id) {
         Music music = getEntity(id);
         music.setStatus(Music.Status.PUBLISH);
         repository.save(music);
@@ -53,7 +52,7 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public boolean close(String id){
+    public boolean close(String id) {
         Music music = getEntity(id);
         music.setStatus(Music.Status.CLOSE);
         repository.save(music);
@@ -61,15 +60,15 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public MusicDto create(MusicEditDto dto) {
+    public MusicDto create(MusicSaveReq dto) {
         Music music = repository.save(mapper.toEntity(dto));
         return mapper.toDto(music);
     }
 
     @Override
-    public MusicDto update(String id,MusicEditDto dto) {
+    public MusicDto update(String id, MusicSaveReq dto) {
         Music musicOld = getEntity(id);
-        Music music = repository.save(mapper.updateEntity(musicOld,dto));
+        Music music = repository.save(mapper.updateEntity(musicOld, dto));
         return mapper.toDto(music);
     }
 }

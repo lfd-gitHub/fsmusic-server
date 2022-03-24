@@ -1,13 +1,14 @@
 package com.lfd.fsmusic.controller;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.lfd.fsmusic.base.ApiResponse;
 import com.lfd.fsmusic.controller.vo.UserVo;
 import com.lfd.fsmusic.mapper.UserMapper;
 import com.lfd.fsmusic.service.UserService;
 import com.lfd.fsmusic.service.dto.UserDto;
-import com.lfd.fsmusic.service.dto.in.UserCreateDto;
+import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -26,8 +27,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
-
-import javax.annotation.security.RolesAllowed;
 
 @Api(tags = "用户接口")
 @RequestMapping("/api/user")
@@ -59,7 +58,7 @@ public class UserController {
     @ApiOperation(value = "用户创建")
     @PostMapping
     @RolesAllowed("ROLE_ADMIN")
-    ApiResponse create(@Validated @RequestBody UserCreateDto user) {
+    ApiResponse create(@Validated @RequestBody UserCreateReq user) {
         UserDto uDo = uService.create(user);
         UserVo uVo = uMapper.toVo(uDo);
         return ApiResponse.ok(uVo);
@@ -79,7 +78,7 @@ public class UserController {
 
     @ApiOperation(value = "更新用户信息")
     @PutMapping("/{id}")
-    ApiResponse update(@PathVariable String id, @Validated @RequestBody UserCreateDto uCreateDto) {
+    ApiResponse update(@PathVariable String id, @Validated @RequestBody UserCreateReq uCreateDto) {
         return ApiResponse.ok(uMapper.toVo(uService.update(id, uCreateDto)));
     }
 
