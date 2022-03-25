@@ -9,9 +9,6 @@ import lombok.Data;
 @Data
 public class BaseDto {
     private String id;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyyMMddHHmmss")
     private LocalDateTime createdTime;
-
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyyMMddHHmmss")
     private LocalDateTime updatedTime;
 }

@@ -86,12 +86,17 @@
         <!-- added end -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <!--test-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -113,6 +118,11 @@
             <groupId>com.qcloud</groupId>
             <artifactId>cos-sts_api</artifactId>
             <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.54</version>
         </dependency>
     </dependencies>
 

@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class FileDto extends BaseDto {
 
+    private String uri;
     private String name;
     private String key;
     private Long size;
@@ -14,5 +15,6 @@ public class FileDto extends BaseDto {
 
     private File.Type type;
     private File.Status status;
+    private File.Storage storage;
 
 }

@@ -1,26 +1,46 @@
 package com.lfd.fsmusic.service;
 
-import java.io.IOException;
-
+import com.lfd.fsmusic.repository.entity.User;
+import com.lfd.fsmusic.repository.entity.WithMockCustomUser;
 import com.lfd.fsmusic.service.dto.in.FileUploadReq;
+import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 import com.lfd.fsmusic.service.dto.out.UploadCredentialsDto;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
+import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
-public class FileUploadServiceTest {
+public class FileUploadServiceTest extends BaseServiceTest{
 
     @Autowired
-    FileUploadService fService;
+    FileService fService;
+
+    @Autowired()
+    @Qualifier("COS")
+    StorageService cosService;
 
     @Test
-    void testCreateCredentials() throws IOException {
+    void testFileUri() {
+        log.debug("testuri => " + cosService);
+    }
+
+    @Test
+    @WithMockCustomUser(username = "lfd")
+    void testCreateCredentials() {
+        log.info("[Test] - testCreateCredentials ========================== ");
+        UserDetails user = SpringUtil.getBean(UserDetailsService.class).loadUserByUsername("lfd");
+        log.info("[Test] - testCreateCredentials ========================== [" + user + "]");
         FileUploadReq req = new FileUploadReq();
         req.setName("test");
         req.setExt("mp3");
@@ -28,7 +48,6 @@ public class FileUploadServiceTest {
         req.setSize(30000L);
         UploadCredentialsDto dto = fService.createCredentials(req);
         log.info(dto.toString());
-
         Assertions.assertNotNull(dto.getTmpSecretId());
         Assertions.assertNotNull(dto.getFileId());
     }

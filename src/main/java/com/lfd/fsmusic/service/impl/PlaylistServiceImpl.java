@@ -8,6 +8,9 @@ import com.lfd.fsmusic.repository.entity.Playlist;
 import com.lfd.fsmusic.service.PlaylistService;
 import com.lfd.fsmusic.service.dto.PlaylistDto;
 import com.lfd.fsmusic.service.dto.in.PlaylistSaveReq;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,15 +18,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Lazy, @Autowired})
 public class PlaylistServiceImpl implements PlaylistService {
 
     private final PlaylistRepository repository;
     private final PlaylistMapper mapper;
 
-    public PlaylistServiceImpl(PlaylistRepository repository, PlaylistMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     private Playlist getEntity(String id) {
         Optional<Playlist> playlist = repository.findById(id);
@@ -45,7 +45,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public boolean publish(String id) {
         Playlist list = getEntity(id);
-        list.setStatus(Playlist.Status.PUBLISH);
+        list.setStatus(Playlist.Status.PUBLISHED);
         repository.save(list);
         return true;
     }
@@ -53,7 +53,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public boolean close(String id) {
         Playlist list = getEntity(id);
-        list.setStatus(Playlist.Status.CLOSE);
+        list.setStatus(Playlist.Status.CLOSED);
         repository.save(list);
         return true;
     }

@@ -11,20 +11,19 @@ import com.lfd.fsmusic.service.MusicService;
 import com.lfd.fsmusic.service.dto.MusicDto;
 import com.lfd.fsmusic.service.dto.in.MusicSaveReq;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Lazy, @Autowired})
 public class MusicServiceImpl implements MusicService {
 
     private final MusicRepository repository;
     private final MusicMapper mapper;
-
-    public MusicServiceImpl(MusicRepository repository, MusicMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     private Music getEntity(String id) {
         Optional<Music> music = repository.findById(id);
@@ -46,7 +45,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public boolean publish(String id) {
         Music music = getEntity(id);
-        music.setStatus(Music.Status.PUBLISH);
+        music.setStatus(Music.Status.PUBLISHED);
         repository.save(music);
         return true;
     }
@@ -54,7 +53,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public boolean close(String id) {
         Music music = getEntity(id);
-        music.setStatus(Music.Status.CLOSE);
+        music.setStatus(Music.Status.CLOSED);
         repository.save(music);
         return true;
     }

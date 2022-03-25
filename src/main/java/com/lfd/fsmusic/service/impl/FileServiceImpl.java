@@ -5,40 +5,39 @@ import java.util.Optional;
 
 import com.lfd.fsmusic.config.exceptions.BizException;
 import com.lfd.fsmusic.config.exceptions.EType;
-import com.lfd.fsmusic.mapper.UploadMapper;
+import com.lfd.fsmusic.mapper.FileMapper;
 import com.lfd.fsmusic.repository.FileRepository;
 import com.lfd.fsmusic.repository.entity.File;
-import com.lfd.fsmusic.service.FileUploadService;
+import com.lfd.fsmusic.repository.entity.User;
+import com.lfd.fsmusic.service.FileService;
 import com.lfd.fsmusic.service.SettingService;
 import com.lfd.fsmusic.service.StorageService;
+import com.lfd.fsmusic.service.base.BaseService;
 import com.lfd.fsmusic.service.dto.FileDto;
 import com.lfd.fsmusic.service.dto.in.FileUploadReq;
 import com.lfd.fsmusic.service.dto.out.UploadCredentialsDto;
 import com.lfd.fsmusic.utils.Common;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import cn.hutool.crypto.SecureUtil;
 
 @Service
-public class FileUploadServiceImpl implements FileUploadService {
+@RequiredArgsConstructor(onConstructor_ = {@Lazy, @Autowired})
+public class FileServiceImpl extends BaseService implements FileService {
 
-    private static Logger logger = LoggerFactory.getLogger(FileUploadServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
-    private SettingService settingService;
-    private Map<String, StorageService> storageServices;
-    private FileRepository fileRepository;
-    private UploadMapper fileMapper;
+    private final SettingService settingService;
+    private final Map<String, StorageService> storageServices;
+    private final FileRepository fileRepository;
+    private final FileMapper fileMapper;
 
-    public FileUploadServiceImpl(UploadMapper fileMapper, FileRepository fileRepository,
-            Map<String, StorageService> storageServices, SettingService settingService) {
-        this.fileRepository = fileRepository;
-        this.storageServices = storageServices;
-        this.fileMapper = fileMapper;
-        this.settingService = settingService;
-    }
 
     @Override
     public UploadCredentialsDto createCredentials(FileUploadReq req) {
@@ -47,7 +46,9 @@ public class FileUploadServiceImpl implements FileUploadService {
         file.setType(Common.getFileTypeFromExt(req.getExt()));
         file.setStorage(settingService.getDefaultStorage());
         file.setKey(SecureUtil.md5(file.getKey()));
-
+        User user = getCurrentUser();
+        file.setCreator(user);
+        file.setUpdater(user);
         logger.debug("file => " + file);
 
         file = fileRepository.save(file);
@@ -63,9 +64,15 @@ public class FileUploadServiceImpl implements FileUploadService {
     public FileDto finishUpload(String id) {
 
         Optional<File> file = fileRepository.findById(id);
+
         if (!file.isPresent()) {
-            throw new BizException(EType.FILE_NOT_FOUND);
+            throw BizException.from(EType.FILE_NOT_FOUND);
         }
+
+        if (!file.get().getCreator().getId().equals(getCurrentUser().getId())) {
+            throw BizException.from(EType.FILE_UPDATE_NO_PERMIT);
+        }
+
         File f = file.get();
         f.setStatus(File.Status.UPLOADED);
 

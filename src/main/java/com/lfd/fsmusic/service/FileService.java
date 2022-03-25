@@ -4,10 +4,10 @@ import com.lfd.fsmusic.service.dto.FileDto;
 import com.lfd.fsmusic.service.dto.in.FileUploadReq;
 import com.lfd.fsmusic.service.dto.out.UploadCredentialsDto;
 
-public interface FileUploadService {
+public interface FileService {
 
-    public UploadCredentialsDto createCredentials(FileUploadReq file);
+    UploadCredentialsDto createCredentials(FileUploadReq file);
 
-    public FileDto finishUpload(String id);
+    FileDto finishUpload(String id);
 
 }

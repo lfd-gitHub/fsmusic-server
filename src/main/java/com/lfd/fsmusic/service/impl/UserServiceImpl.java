@@ -14,34 +14,30 @@ import com.lfd.fsmusic.mapper.UserMapper;
 import com.lfd.fsmusic.repository.UserRepository;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.UserService;
+import com.lfd.fsmusic.service.base.BaseService;
 import com.lfd.fsmusic.service.dto.UserDto;
 import com.lfd.fsmusic.service.dto.in.LoginReq;
 import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor(onConstructor_ = {@Lazy, @Autowired})
+public class UserServiceImpl extends BaseService implements UserService {
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository uRepo;
     private final PasswordEncoder pEncoder;
-
-    public UserServiceImpl(UserRepository uRepo, UserMapper uMapper, PasswordEncoder pEncoder) {
-        this.uRepo = uRepo;
-        this.uMapper = uMapper;
-        this.pEncoder = pEncoder;
-    }
-
     private final UserMapper uMapper;
 
     @Override
@@ -96,19 +92,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> oUser = uRepo.findByUsername(username);
         if (!oUser.isPresent()) {
             throw new BizException(EType.USERNAME_NOT_FOUND);
         }
-        UserDto uDto = uMapper.toDto(oUser.get());
-        logger.debug("uDto = " + uDto);
-        return uDto;
+        return oUser.get();
     }
 
     @Override
     public String createToken(LoginReq loginDto) {
-        UserDto user = loadUserByUsername(loginDto.getUsername());
+        User user = loadUserByUsername(loginDto.getUsername());
         if (!pEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             throw new BizException(EType.USER_PASSWORD_NOT_MATCH);
         }
@@ -129,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto current() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return loadUserByUsername(auth.getName());
+        User user = getCurrentUser();
+        return uMapper.toDto(user);
     }
 }

@@ -9,12 +9,10 @@ import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.stereotype.Component;
 
 /**
  * UserMapper
  */
-@Component
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 

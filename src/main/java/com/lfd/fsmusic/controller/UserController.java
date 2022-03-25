@@ -9,6 +9,9 @@ import com.lfd.fsmusic.service.UserService;
 import com.lfd.fsmusic.service.dto.UserDto;
 import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -31,21 +34,17 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = "用户接口")
 @RequestMapping("/api/user")
 @RestController
+@RequiredArgsConstructor(onConstructor_ = {@Lazy, @Autowired})
 public class UserController {
 
     private final UserService uService;
     private final UserMapper uMapper;
 
-    public UserController(UserService uService, UserMapper uMapper) {
-        this.uService = uService;
-        this.uMapper = uMapper;
-    }
-
     @ApiOperation(value = "查找用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query"),
-            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query"),
-            @ApiImplicitParam(name = "sort", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "page", dataType = "Integer", dataTypeClass = Integer.class, paramType = "query"),
+            @ApiImplicitParam(name = "size", dataType = "Integer", dataTypeClass = Integer.class, paramType = "query"),
+            @ApiImplicitParam(name = "sort", dataType = "String", dataTypeClass = String.class, paramType = "query"),
     })
     @GetMapping
     @RolesAllowed("ROLE_ADMIN")

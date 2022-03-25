@@ -7,10 +7,8 @@ import com.lfd.fsmusic.service.dto.in.PlaylistSaveReq;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.springframework.stereotype.Component;
 
-@Component
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface PlaylistMapper {
 
     PlaylistVo toVo(PlaylistDto dto);

@@ -2,6 +2,7 @@ package com.lfd.fsmusic.repository.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.lfd.fsmusic.repository.entity.base.AbstractEntity;
+import com.lfd.fsmusic.repository.entity.base.BaseEntity;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
 import lombok.ToString;
@@ -21,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Data
 @ToString(callSuper = true)
-public class User extends AbstractEntity {
+public class User extends BaseEntity implements UserDetails {
 
     private String username;
     private String nickname;
@@ -39,5 +44,29 @@ public class User extends AbstractEntity {
 
     public static enum Gender {
         MALE, FEMALE, UNKNOWN
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 }

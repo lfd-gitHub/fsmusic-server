@@ -15,9 +15,9 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public abstract class AbstractEntity {
+public abstract class BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "ksuid")     
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "ksuid")
     @GenericGenerator(name = "ksuid", strategy = "com.lfd.fsmusic.config.KsuidIdentifierGenderator")
     private String id;
     @CreationTimestamp

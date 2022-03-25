@@ -16,7 +16,9 @@ public enum EType {
 
     MUSIC_NOT_FOUND(40402001, "歌曲不存在"),
     FILE_NOT_FOUND(40403001, "文件不存在"),
-    PLAYLIST_NOT_FOUND(40404001, "歌单不存在");
+    FILE_UPDATE_NO_PERMIT(40403001, "无权限修改文件"),
+    PLAYLIST_NOT_FOUND(40404001, "歌单不存在"),
+    ARTIST_NOT_FOUND(40405001, "歌手不存在");
 
     private final Integer code;
     private final String msg;

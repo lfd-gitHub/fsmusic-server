@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class FileVo extends BaseVo {
 
+    private String uri;
     private String name;
     private String key;
     private Long size;

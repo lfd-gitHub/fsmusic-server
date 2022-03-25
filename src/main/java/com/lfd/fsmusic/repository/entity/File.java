@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import com.lfd.fsmusic.repository.entity.base.AbstractEntity;
+import com.lfd.fsmusic.repository.entity.base.TraceableEntity;
 
 import lombok.Data;
 import lombok.ToString;
@@ -13,7 +13,7 @@ import lombok.ToString;
 @Entity
 @Data
 @ToString(callSuper = true)
-public class File extends AbstractEntity {
+public class File extends TraceableEntity {
 
     private String name;
     @Column(name = "`key`")
