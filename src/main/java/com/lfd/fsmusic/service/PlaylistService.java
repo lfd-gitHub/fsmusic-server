@@ -1,22 +1,19 @@
 package com.lfd.fsmusic.service;
 
+import com.lfd.fsmusic.service.base.BaseService;
 import com.lfd.fsmusic.service.dto.PlaylistDto;
-import com.lfd.fsmusic.service.dto.in.PlaylistSaveReq;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface PlaylistService {
+public interface PlaylistService extends BaseService<PlaylistDto> {
 
-    Page<PlaylistDto> list(Pageable pageable);
+    Page<PlaylistDto> search(String name, Pageable pageable);
 
     boolean delete(String id);
 
     boolean publish(String id);
 
     boolean close(String id);
-
-    PlaylistDto create(PlaylistSaveReq dto);
-
-    PlaylistDto update(String id, PlaylistSaveReq dto);
 
 }

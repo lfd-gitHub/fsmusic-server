@@ -7,7 +7,7 @@ import com.lfd.fsmusic.repository.entity.Playlist;
 import lombok.Data;
 
 @Data
-public class PlaylistVo {
+public class PlaylistVo  extends BaseVo{
 
     private String name;
     private String description;

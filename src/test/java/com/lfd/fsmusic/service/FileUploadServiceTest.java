@@ -1,15 +1,11 @@
 package com.lfd.fsmusic.service;
 
-import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.repository.entity.WithMockCustomUser;
 import com.lfd.fsmusic.service.dto.in.FileUploadReq;
-import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 import com.lfd.fsmusic.service.dto.out.UploadCredentialsDto;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
-public class FileUploadServiceTest extends BaseServiceTest{
+public class FileUploadServiceTest extends BaseServiceTest {
 
     @Autowired
     FileService fService;

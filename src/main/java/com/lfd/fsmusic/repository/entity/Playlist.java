@@ -1,11 +1,19 @@
 package com.lfd.fsmusic.repository.entity;
 
-import com.lfd.fsmusic.repository.entity.base.BaseEntity;
-import com.lfd.fsmusic.repository.entity.base.TraceableEntity;
-import lombok.Data;
-
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import com.lfd.fsmusic.repository.entity.base.BaseEntity;
+
+import lombok.Data;
 
 @Entity
 @Data

@@ -51,14 +51,14 @@ public class UserController {
     ApiResponse list(
             @PageableDefault(sort = {
                     "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable) {
-        return ApiResponse.ok(uService.find(pageable).map(uMapper::toVo));
+        return ApiResponse.ok(uService.list(pageable).map(uMapper::toVo));
     }
 
     @ApiOperation(value = "用户创建")
     @PostMapping
     @RolesAllowed("ROLE_ADMIN")
-    ApiResponse create(@Validated @RequestBody UserCreateReq user) {
-        UserDto uDo = uService.create(user);
+    ApiResponse create(@Validated @RequestBody UserCreateReq req) {
+        UserDto uDo = uService.create(uMapper.fromReq(req));
         UserVo uVo = uMapper.toVo(uDo);
         return ApiResponse.ok(uVo);
     }
@@ -66,7 +66,7 @@ public class UserController {
     @ApiOperation(value = "获取用户信息")
     @GetMapping("/{id}")
     ApiResponse get(@PathVariable String id) {
-        return ApiResponse.ok(uMapper.toVo(uService.findById(id)));
+        return ApiResponse.ok(uMapper.toVo(uService.get(id)));
     }
 
     @ApiOperation(value = "获取当前用户信息")
@@ -77,8 +77,8 @@ public class UserController {
 
     @ApiOperation(value = "更新用户信息")
     @PutMapping("/{id}")
-    ApiResponse update(@PathVariable String id, @Validated @RequestBody UserCreateReq uCreateDto) {
-        return ApiResponse.ok(uMapper.toVo(uService.update(id, uCreateDto)));
+    ApiResponse update(@PathVariable String id, @Validated @RequestBody UserCreateReq req) {
+        return ApiResponse.ok(uMapper.toVo(uService.update(id, uMapper.fromReq(req))));
     }
 
     @ApiOperation(value = "删除用户")

@@ -14,9 +14,9 @@ public abstract class TraceableEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "creator_uid")
-    protected User creator;
+    private User creator;
     @ManyToOne
     @JoinColumn(name = "updater_uid")
-    protected User updater;
+    private User updater;
 
 }

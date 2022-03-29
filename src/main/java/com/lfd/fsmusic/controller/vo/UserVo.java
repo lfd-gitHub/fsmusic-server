@@ -9,7 +9,8 @@ import com.lfd.fsmusic.repository.entity.User.Gender;
 import lombok.Data;
 
 @Data
-public class UserVo {
+public class UserVo extends BaseVo{
+
     private String username;
     private String nickname;
     private Gender gender;

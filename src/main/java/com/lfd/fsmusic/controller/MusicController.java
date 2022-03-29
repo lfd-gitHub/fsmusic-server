@@ -45,23 +45,23 @@ public class MusicController {
             @ApiImplicitParam(name = "sort", dataTypeClass = String.class, paramType = "query"),
     })
     @GetMapping
-    public ApiResponse list(@PageableDefault(sort = {
-            "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable) {
-        return ApiResponse.ok(musicService.list(pageable).map(mapper::toVo));
+    public ApiResponse search(@PageableDefault(sort = {
+            "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable,String name) {
+        return ApiResponse.ok(musicService.search(name,pageable).map(mapper::toVo));
     }
 
     @ApiOperation(value = "音乐创建")
     @PostMapping
     @RolesAllowed("ROLE_ADMIN")
-    public ApiResponse create(@Validated @RequestBody MusicSaveReq dto) {
-        return ApiResponse.ok(mapper.toVo(musicService.create(dto)));
+    public ApiResponse create(@Validated @RequestBody MusicSaveReq req) {
+        return ApiResponse.ok(mapper.toVo(musicService.create(mapper.fromReq(req))));
     }
 
     @ApiOperation(value = "音乐修改")
     @PutMapping("/{id}")
     @RolesAllowed("ROLE_ADMIN")
-    public ApiResponse update(@PathVariable String id, @Validated @RequestBody MusicSaveReq dto) {
-        return ApiResponse.ok(mapper.toVo(musicService.update(id, dto)));
+    public ApiResponse update(@PathVariable String id, @Validated @RequestBody MusicSaveReq req) {
+        return ApiResponse.ok(mapper.toVo(musicService.update(id, mapper.fromReq(req))));
     }
 
     @ApiOperation(value = "音乐发布")

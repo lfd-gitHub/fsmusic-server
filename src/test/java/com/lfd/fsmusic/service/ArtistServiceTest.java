@@ -1,41 +1,42 @@
 package com.lfd.fsmusic.service;
 
+import com.lfd.fsmusic.mapper.ArtistMapper;
 import com.lfd.fsmusic.repository.entity.WithMockCustomUser;
 import com.lfd.fsmusic.service.dto.ArtistDto;
 import com.lfd.fsmusic.service.dto.in.ArtistSaveReq;
 import com.lfd.fsmusic.service.dto.in.FileUploadReq;
 import com.lfd.fsmusic.service.dto.out.UploadCredentialsDto;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
-class ArtistServiceTest extends BaseServiceTest{
+class ArtistServiceTest extends BaseServiceTest {
 
     @Autowired
     ArtistService artistService;
-
     @Autowired
     FileService fileService;
+    @Autowired
+    ArtistMapper artistMapper;
 
     String fileId;
+    String artistId;
 
     @BeforeEach
-    void initFile(){
+    void initFile() {
         FileUploadReq req = new FileUploadReq();
         req.setName("test");
         req.setExt("mp3");
         req.setKey("7815696ecbf1c96e6894b779456d330e");
         req.setSize(30000L);
         UploadCredentialsDto dto = fileService.createCredentials(req);
-        log.info("[initFile] = {}",dto.toString());
+        log.info("[initFile] = {}", dto.toString());
         this.fileId = dto.getFileId();
     }
 
@@ -44,10 +45,24 @@ class ArtistServiceTest extends BaseServiceTest{
     void create() {
         ArtistSaveReq artistSaveReq = new ArtistSaveReq();
         artistSaveReq.setName("test");
-        log.info("[create] fileId = {}",fileId);
+        log.info("[create] fileId = {}", fileId);
         artistSaveReq.setCoverId(fileId);
         artistSaveReq.setRemark("test rm");
-        ArtistDto artistDto = artistService.create(artistSaveReq);
-        log.info("[create] = {}",artistDto.toString());
+        ArtistDto artistDto = artistService.create(artistMapper.fromReq(artistSaveReq));
+        this.artistId = artistDto.getId();
+        log.info("[create] = {}", artistDto.toString());
     }
+
+    @Test
+    @WithMockCustomUser()
+    void get() {
+        ArtistSaveReq artistSaveReq = new ArtistSaveReq();
+        artistSaveReq.setName("test");
+        log.info("[create] fileId = {}", fileId);
+        artistSaveReq.setCoverId(fileId);
+        artistSaveReq.setRemark("test rm");
+        ArtistDto artistDto = artistService.get(artistId);
+        log.info("[create] = {}", artistDto.toString());
+    }
+
 }

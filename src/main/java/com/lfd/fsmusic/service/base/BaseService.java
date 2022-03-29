@@ -1,16 +1,20 @@
 package com.lfd.fsmusic.service.base;
 
-import com.lfd.fsmusic.repository.entity.User;
+import com.lfd.fsmusic.service.dto.BaseDto;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-public abstract class BaseService {
+public interface BaseService<Dto extends BaseDto> {
 
-    protected User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        return user;
-    }
+    Page<Dto> list(Pageable pageable);
+
+    Dto create(Dto dto);
+
+    boolean delete(String id);
+
+    Dto update(String id, Dto dto);
+
+    Dto get(String id);
 
 }

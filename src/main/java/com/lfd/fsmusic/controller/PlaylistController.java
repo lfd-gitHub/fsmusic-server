@@ -45,21 +45,21 @@ public class PlaylistController {
             @ApiImplicitParam(name = "sort", dataType = "String", dataTypeClass = String.class, paramType = "query"),
     })
     @GetMapping
-    public ApiResponse list(@PageableDefault(sort = {
-            "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable) {
-        return ApiResponse.ok(playlistService.list(pageable).map(mapper::toVo));
+    public ApiResponse search(@PageableDefault(sort = {
+            "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable,String name) {
+        return ApiResponse.ok(playlistService.search(name,pageable).map(mapper::toVo));
     }
 
     @ApiOperation(value = "音乐列表创建")
     @PostMapping
-    public ApiResponse create(@Validated @RequestBody PlaylistSaveReq dto) {
-        return ApiResponse.ok(mapper.toVo(playlistService.create(dto)));
+    public ApiResponse create(@Validated @RequestBody PlaylistSaveReq req) {
+        return ApiResponse.ok(mapper.toVo(playlistService.create(mapper.fromReq(req))));
     }
 
     @ApiOperation(value = "音乐列表修改")
     @PutMapping("/{id}")
-    public ApiResponse update(@PathVariable String id, @Validated @RequestBody PlaylistSaveReq dto) {
-        return ApiResponse.ok(mapper.toVo(playlistService.update(id, dto)));
+    public ApiResponse update(@PathVariable String id, @Validated @RequestBody PlaylistSaveReq req) {
+        return ApiResponse.ok(mapper.toVo(playlistService.update(id, mapper.fromReq(req))));
     }
 
     @ApiOperation(value = "音乐列表发布")

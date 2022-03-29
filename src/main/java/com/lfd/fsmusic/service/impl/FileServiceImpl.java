@@ -1,55 +1,76 @@
 package com.lfd.fsmusic.service.impl;
 
-import java.util.Map;
-import java.util.Optional;
-
+import cn.hutool.crypto.SecureUtil;
 import com.lfd.fsmusic.config.exceptions.BizException;
 import com.lfd.fsmusic.config.exceptions.EType;
 import com.lfd.fsmusic.mapper.FileMapper;
+import com.lfd.fsmusic.mapper.base.IEntityMapper;
 import com.lfd.fsmusic.repository.FileRepository;
 import com.lfd.fsmusic.repository.entity.File;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.FileService;
 import com.lfd.fsmusic.service.SettingService;
 import com.lfd.fsmusic.service.StorageService;
-import com.lfd.fsmusic.service.base.BaseService;
+import com.lfd.fsmusic.service.base.SimpleBaseServiceImpl;
 import com.lfd.fsmusic.service.dto.FileDto;
 import com.lfd.fsmusic.service.dto.in.FileUploadReq;
 import com.lfd.fsmusic.service.dto.out.UploadCredentialsDto;
 import com.lfd.fsmusic.utils.Common;
-
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import cn.hutool.crypto.SecureUtil;
+import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Lazy, @Autowired})
-public class FileServiceImpl extends BaseService implements FileService {
-
-    private static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+public class FileServiceImpl extends SimpleBaseServiceImpl<File, FileDto> implements FileService {
 
     private final SettingService settingService;
     private final Map<String, StorageService> storageServices;
     private final FileRepository fileRepository;
     private final FileMapper fileMapper;
 
+    @Override
+    protected FileRepository getRepo() {
+        return null;
+    }
+
+    @Override
+    protected IEntityMapper<File, FileDto> getMapper() {
+        return null;
+    }
+
+    @Override
+    public FileDto create(FileDto dto) {
+        throw new RuntimeException("Needn't Implement");
+    }
+
+    @Override
+    public FileDto update(String id, FileDto dto) {
+        throw new RuntimeException("Needn't Implement");
+    }
+
+    @Override
+    public boolean delete(String id) {
+        throw new RuntimeException("Needn't Implement");
+    }
 
     @Override
     public UploadCredentialsDto createCredentials(FileUploadReq req) {
 
-        File file = fileMapper.toEntity(req);
+        File file = fileMapper.fromReq(req);
         file.setType(Common.getFileTypeFromExt(req.getExt()));
         file.setStorage(settingService.getDefaultStorage());
         file.setKey(SecureUtil.md5(file.getKey()));
         User user = getCurrentUser();
         file.setCreator(user);
         file.setUpdater(user);
-        logger.debug("file => " + file);
+        log.debug("file => " + file);
 
         file = fileRepository.save(file);
 
@@ -78,4 +99,5 @@ public class FileServiceImpl extends BaseService implements FileService {
 
         return fileMapper.toDto(fileRepository.save(f));
     }
+
 }

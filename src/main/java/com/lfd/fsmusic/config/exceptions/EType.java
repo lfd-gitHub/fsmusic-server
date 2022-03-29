@@ -9,6 +9,7 @@ public enum EType {
     NOT_FOUND(404, "未找到"), //
 
     USERNAME_NOT_FOUND(40401001, "用户名不存在"),
+    USER_NOT_FOUND(40401001, "用户名不存在"),
     USERNAME_DUPLICATE(40001002, "用户名重复"),
     USER_PASSWORD_NOT_MATCH(40001003, "用户名或密码错误"),
     USER_DISABLED(50001001, "用户未启用"),

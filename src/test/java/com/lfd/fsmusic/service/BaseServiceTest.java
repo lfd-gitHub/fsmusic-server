@@ -1,6 +1,7 @@
 package com.lfd.fsmusic.service;
 
 import cn.hutool.extra.spring.SpringUtil;
+import com.lfd.fsmusic.mapper.UserMapper;
 import com.lfd.fsmusic.repository.entity.User;
 import com.lfd.fsmusic.service.dto.in.UserCreateReq;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,8 @@ public abstract class BaseServiceTest {
         userCreateRequest.setNickname("lfd");
         userCreateRequest.setPassword("123456");
         userCreateRequest.setGender(User.Gender.MALE.toString());
-        SpringUtil.getBean(UserService.class).create(userCreateRequest);
+        UserMapper userMapper = SpringUtil.getBean(UserMapper.class);
+        SpringUtil.getBean(UserService.class).create(userMapper.fromReq(userCreateRequest));
     }
 
 }

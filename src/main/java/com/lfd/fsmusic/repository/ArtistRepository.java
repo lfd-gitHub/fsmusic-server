@@ -1,7 +1,9 @@
 package com.lfd.fsmusic.repository;
 
 import com.lfd.fsmusic.repository.entity.Artist;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ArtistRepository extends JpaRepository<Artist,String> {
+@Repository
+public interface ArtistRepository extends BaseRepository<Artist> {
+
 }

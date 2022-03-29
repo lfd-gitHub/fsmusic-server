@@ -35,20 +35,20 @@ public class ArtistController {
             @ApiImplicitParam(name = "sort", dataTypeClass = String.class, paramType = "query"),
     })
     @GetMapping
-    public ApiResponse list(@PageableDefault(sort = {
-            "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable) {
-        return ApiResponse.ok(artistService.list(pageable).map(artistMapper::toVo));
+    public ApiResponse search(@PageableDefault(sort = {
+            "createTime" }, size = 2, direction = Sort.Direction.DESC) @ApiIgnore Pageable pageable,String name) {
+        return ApiResponse.ok(artistService.search(name,pageable).map(artistMapper::toVo));
     }
 
     @PostMapping
     public ApiResponse create(@Validated @RequestBody ArtistSaveReq req){
-        ArtistDto artistDto = artistService.create(req);
+        ArtistDto artistDto = artistService.create(artistMapper.fromReq(req));
         return ApiResponse.ok(artistDto);
     }
 
     @PutMapping("/{id}")
     public ApiResponse update(@PathVariable String id,@Validated @RequestBody ArtistSaveReq req){
-        ArtistDto artistDto = artistService.update(id,req);
+        ArtistDto artistDto = artistService.update(id,artistMapper.fromReq(req));
         return ApiResponse.ok(artistDto);
     }
 
